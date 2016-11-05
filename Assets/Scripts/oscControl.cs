@@ -29,15 +29,15 @@ public class oscControl : MonoBehaviour {
 	
 	private Dictionary<string, ServerLog> servers;
 	private Dictionary<string, ClientLog> clients;
-	private float randVal=0f;
-	public GameObject cube;
+
+	[SerializeField] List<GameObject> things;
+	float randVal=0f;
 	private String msg="";
 	// Script initialization
-	void Start() {	
+	void Start() {
 		OSCHandler.Instance.Init(); //init OSC
 		servers = new Dictionary<string, ServerLog>();
 		clients = new Dictionary<string,ClientLog> ();
-		cube = GameObject.Find ("Cube");
 	}
 
 	// NOTE: The received messages at each server are updated here
@@ -60,10 +60,18 @@ public class oscControl : MonoBehaviour {
 			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "/1/fader4", randVal);
 			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "message", "ur gayx");
 			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "", randVal);
-		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positionx:", cube.transform.position.x);
-		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positiony:", cube.transform.position.y);
-			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positiony:", cube.transform.position.y);
-			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positionz:", cube.transform.position.z);
+
+		foreach (var thing in things) {
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positionx:", thing.transform.position.z);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positiony:", thing.transform.position.y);
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positionz:", -thing.transform.position.x);
+		}
+			
+		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationx:", transform.rotation.x);
+		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationy:", transform.rotation.y);
+		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationz:", transform.rotation.z);
+			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positiony:", transform.position.y);
+			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "positionz:", transform.position.z);
 			if (Input.GetKey("space")) {
 				OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "footstep:", 1);
 			}
@@ -80,7 +88,7 @@ public class oscControl : MonoBehaviour {
 			// show the last received from the log in the Debug console
 			if (item.Value.log.Count > 0) {
 				int lastPacketIndex = item.Value.packets.Count - 1;
-					
+
 				//UnityEngine.Debug.Log (String.Format ("SERVER: {0} ADDRESS: {1} VALUE : {2}", 
 				//	                                    item.Key, // Server name
 				//	                                    item.Value.packets [lastPacketIndex].Address, // OSC address
@@ -88,13 +96,11 @@ public class oscControl : MonoBehaviour {
 					
 				//converts the values into MIDI to scale the cube
 				float tempVal = float.Parse (item.Value.packets [lastPacketIndex].Data [0].ToString ());
-				cube.transform.localScale = new Vector3 (tempVal, tempVal, tempVal);
+				transform.localScale = new Vector3 (tempVal, tempVal, tempVal);
 			}
 		}
-			
 
-		foreach( KeyValuePair<string, ClientLog> item in clients )
-		{
+		//foreach( var item in clients ) {
 			// If we have sent at least one message,
 			// show the last sent message from the log in the Debug console
 			//if(item.Value.log.Count > 0) 
@@ -112,7 +118,6 @@ public class oscControl : MonoBehaviour {
 			//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "", randval);
 			//OSCHandler.Instance.UpdateLogs();
 			//print("sent " + randval + " message to client");
-
-		}
+		//}
 	}
 }
