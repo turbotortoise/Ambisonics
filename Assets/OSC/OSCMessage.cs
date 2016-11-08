@@ -3,17 +3,17 @@
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
 //
-// 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-// 	  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+// 	  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
 // 	  and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// 	  The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// 	  The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // 	  of the Software.
 //
-// 	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// 	  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// 	  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// 	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// 	  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// 	  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // 	  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // 	  IN THE SOFTWARE.
 //
@@ -33,7 +33,7 @@ namespace UnityOSC
 			_typeTag = DEFAULT.ToString();
 			this.Address = address;
 		}
-		
+
 		public OSCMessage (string address, object msgvalue)
 		{
 			_typeTag = DEFAULT.ToString();
@@ -41,7 +41,7 @@ namespace UnityOSC
 			Append(msgvalue);
 		}
 		#endregion
-		
+
 		#region Member Variables
 		private const char INTEGER = 'i';
 		private const char FLOAT   = 'f';
@@ -50,14 +50,14 @@ namespace UnityOSC
 		private const char STRING  = 's';
 		private const char BYTE    = 'b';
 		private const char DEFAULT = ',';
-		
+
 		private string _typeTag;
-		
+
 		#endregion
-		
+
 		#region Properties
 		#endregion
-	
+
 		#region Methods
 
 		/// <summary>
@@ -67,12 +67,12 @@ namespace UnityOSC
 		/// A <see cref="System.Boolean"/>
 		/// </returns>
 		override public bool IsBundle() { return false; }
-		
+
 		/// <summary>
 		/// Packs the OSC message to binary data.
 		/// </summary>
-		override public void Pack() 
-		{	
+		override public void Pack()
+		{
 			List<byte> data = new List<byte>();
 
 			data.AddRange(OSCPacket.PackValue(_address));
@@ -92,7 +92,7 @@ namespace UnityOSC
 
 			this._binaryData = data.ToArray();
 		}
-		
+
 		/// <summary>
 		/// Unpacks an OSC message.
 		/// </summary>
@@ -105,7 +105,7 @@ namespace UnityOSC
 		/// <returns>
 		/// A <see cref="OSCMessage"/>
 		/// </returns>
-		public new static OSCMessage Unpack(byte[] data, ref int start)
+		public static OSCMessage Unpack(byte[] data, ref int start)
 		{
 			string address = OSCPacket.UnpackValue<string>(data, ref start);
 			OSCMessage message = new OSCMessage(address);
@@ -158,7 +158,7 @@ namespace UnityOSC
 
 			return message;
 		}
-		
+
 		/// <summary>
 		/// Appends a value to an OSC message.
 		/// </summary>
