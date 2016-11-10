@@ -38,6 +38,22 @@ public class oscControl : MonoBehaviour {
 		//clients = new Dictionary<string,ClientLog> ();
 	}
 
+
+
+	List<float> FlattenSoundData(RaycastSound sound) {
+		var list = new List<float> ();
+		list.Add (sound.distance);
+		list.Add (sound.time);
+		list.Add (sound.volume);
+		list.Add (sound.pitch);
+		list.Add (sound.position.x);
+		list.Add (sound.position.y);
+		list.Add (sound.position.z);
+		return list;
+	}
+
+
+
 	// NOTE: The received messages at each server are updated here
     // Hence, this update depends on your application architecture
     // How many frames per second or Update() calls per frame?
@@ -48,6 +64,25 @@ public class oscControl : MonoBehaviour {
 
 		servers = OSCHandler.Instance.Servers;
 		//clients = OSCHandler.Instance.Clients;
+
+		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "list:", new List<float> { 0.2f, 0.4f, 0.5f, -2.1f });
+		var list = new List<RaycastSound> {
+			new RaycastSound (
+				distance: 2f,
+				time: 1.3f,
+				volume: 0.1f,
+				color: Color.gray,
+				position: Vector3.one),
+			new RaycastSound (
+				distance: -12f,
+				time: 0.3f,
+				volume: 0.5f,
+				color: Color.red,
+				position: Vector3.zero)
+		};
+
+		for (var i=0; i<list.Count; ++i)
+			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "list:raycast:"+i+":", FlattenSoundData(list[i]));
 
 		foreach (var thing in things) {
 			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positionx:", thing.transform.position.z);
