@@ -5,30 +5,50 @@ using System.Collections.Generic;
 
 public struct RaycastSound {
 
-	public float distance;
 	public float time;
 	public float volume;
 
-	public float pitch;
-	//public float timbre;
-	//public float dampening;
-	//public float attenuation;
+	public float absorption;
+	public float roughness;
+	public float occlusion;
+	public float attenuation;
+
+	public string name;
 
 	public Vector3 position;
 
 	public RaycastSound(
-					float distance, 
 					float time, 
-					float volume, 
+					float volume,
+					string name,
 					Color color, 
+					Vector3 position) : this(
+			time: time,
+			volume: volume,
+			name: name,
+			absorption: color.r,
+			roughness: color.g,
+			occlusion: color.b,
+			attenuation: color.a,
+			position: position) { }
+
+	public RaycastSound(
+					float time,
+					float volume,
+					string name,
+					float absorption,
+					float roughness,
+					float occlusion,
+					float attenuation,
 					Vector3 position) {
-		this.distance = distance;
 		this.time = time;
 		this.volume = volume;
-		this.pitch = color.grayscale;
-		//this.timbre = color.g;
-		//this.dampening = color.b;
-		//this.attenuation = color.a;
+		this.absorption = absorption;
+		this.roughness = roughness;
+		this.occlusion = occlusion;
+		this.attenuation = attenuation;
+		this.name = name;
 		this.position = position;
 	}
+
 }

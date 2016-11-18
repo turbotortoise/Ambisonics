@@ -51,10 +51,8 @@ public class RaycastSoundProbe : MonoBehaviour {
         var list = hits.OrderBy(hit => hit.distance);
         var nextColor = Color.Lerp(
             color, new Color(color.r, color.g, color.b, 0), 0.5f);
-        var nearest = ray.GetPoint(distance);
         if (list.Any()) {
             var hit = list.First();
-            nearest = hit.point;
             var renderer = hit.transform.GetComponent<Renderer>();
             var tex = renderer.material.mainTexture as Texture2D;
             if (tex==null)
@@ -81,7 +79,11 @@ public class RaycastSoundProbe : MonoBehaviour {
             ray: new Ray(
                 origin: ray.GetPoint(distance),
                 direction: ray.direction)));
+		#if _DEBUG
+		var nearest = ray.GetPoint(distance);
+		if (list.Any()) nearest = hit.point;
         DebugLine.DrawLine(ray.origin,nearest,color,nextColor,10f,1f);
+		#endif
     }
 
 

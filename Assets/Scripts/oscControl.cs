@@ -30,7 +30,7 @@ public class oscControl : MonoBehaviour {
 	private Dictionary<string, ServerLog> servers;
 	//private Dictionary<string, ClientLog> clients;
 
-	[SerializeField] List<GameObject> things;
+	[SerializeField] List<RaycastSoundEmitter> things;
 
 	void Start() {
 		OSCHandler.Instance.Init(); //init OSC
@@ -40,17 +40,31 @@ public class oscControl : MonoBehaviour {
 
 
 
-	List<float> FlattenSoundData(RaycastSound sound) {
-		var list = new List<float> ();
-		list.Add (sound.distance);
-		list.Add (sound.time);
-		list.Add (sound.volume);
-		list.Add (sound.pitch);
-		list.Add (sound.position.x);
-		list.Add (sound.position.y);
-		list.Add (sound.position.z);
-		return list;
+	string FlattenSoundData(RaycastSound sound) {
+		return string.Format(
+			"{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
+			sound.name,
+			sound.time,
+			sound.occlusion,
+			sound.absorption,
+			sound.roughness,
+			sound.volume,
+			sound.position.x,
+			sound.position.z); }
+
+	List<float> ListFlattenData (RaycastSound sound) {
+		return new List<float> {
+			1f,
+			sound.time,	
+			sound.occlusion,
+			sound.absorption,
+			sound.roughness,
+			sound.volume,
+			sound.position.x,
+			sound.position.z
+		};
 	}
+
 
 
 
@@ -65,30 +79,13 @@ public class oscControl : MonoBehaviour {
 		servers = OSCHandler.Instance.Servers;
 		//clients = OSCHandler.Instance.Clients;
 
-		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "list:", new List<float> { 0.2f, 0.4f, 0.5f, -2.1f });
-		var list = new List<RaycastSound> {
-			new RaycastSound (
-				distance: 2f,
-				time: 1.3f,
-				volume: 0.1f,
-				color: Color.gray,
-				position: Vector3.one),
-			new RaycastSound (
-				distance: -12f,
-				time: 0.3f,
-				volume: 0.5f,
-				color: Color.red,
-				position: Vector3.zero)
-		};
+		//foreach (var thing in things) 
+		//	OSCHandler.Instance.SendMessageToClient (
+		//		"TouchOSC Bridge", "list:raycast:1:", ListFlattenData(thing.sound));
 
-		for (var i=0; i<list.Count; ++i)
-			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "list:raycast:"+i+":", FlattenSoundData(list[i]));
-
-		foreach (var thing in things) {
-			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positionx:", thing.transform.position.z);
-			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positiony:", thing.transform.position.y);
-			OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", thing.name + "positionz:", -thing.transform.position.x);
-		}
+		foreach (var thing in things) 
+			OSCHandler.Instance.SendMessageToClient (
+				"TouchOSC Bridge", "list:raycast:1:", ListFlattenData(thing.sound));
 
 		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationx:", transform.rotation.x);
 		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationy:", transform.rotation.y);
@@ -101,7 +98,7 @@ public class oscControl : MonoBehaviour {
 			else {
 				//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "footstep:", 0);
 			}
-		print("packet sent");
+		//print("packet sent");
 		//}
 		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "int", 5);
 		OSCHandler.Instance.UpdateLogs();

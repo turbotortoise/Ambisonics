@@ -18,11 +18,26 @@ You'll need to set up your VR device as you normally do,
 and you'll need to download the appropriate version of the game.
 
 ## Changelog ##
+
+### [v0.1.1-alpha][] ###
+- multiple sounds now played over Max/MSP connection
+- more data being sent to Max/MSP including:
+    - absorption of sound, so sound loses volume when colliding
+    - surface roughness, as a factor of sound diffusion
+    - occlusion, which may have applications for simulating echoes
+    - attenuation, which simulates sounds traveling through different substances
+- quick player prefab switcher implemented, now one build works for all platforms
+- models made with special sound maps
+    - absorption is red, roughness is blue, etc
+- snow particles and color grading added
+    - establishes a cold environment, looks pretty
+
 ### [v0.1.0-alpha][] ###
 - implemented a basic raycasting solution for gathering sound data
 - established pipeline from Unity objects to Max/MSP spatialized sounds
 - only placeholder environment so far, not yet in separate rendering layer
 
+[v0.1.1-alpha]: <https://github.com/turbotortoise/Ambisonics/releases/tag/v0.1.1-alpha/>
 [v0.1.0-alpha]: <https://github.com/turbotortoise/Ambisonics/releases/tag/v0.1.0-alpha/>
 
 [site]: <http://google.com/>

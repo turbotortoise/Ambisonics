@@ -14,13 +14,25 @@ public class RaycastSoundEmitter : MonoBehaviour {
     [SerializeField] float range = 64f;
     [SerializeField] float distance = 4f;
     [SerializeField] Color color = Color.green;
+	[SerializeField] GameObject player;
+
+	public RaycastSound sound {
+		get {
+			return new RaycastSound (
+				name: "sound1",
+				time: 0.1f,
+				volume: 1f,
+				color: Color.clear,
+				position: player.transform.position - transform.position);
+			}
+	}
 
 	void Awake() {
 		layerMask = 1 << LayerMask.NameToLayer("Sound");	
 		raycastSounds = new RaycastSound[resolution];
 	}
 
-    void Start() {
+    void Start1() {
 		if (seed)
 			Random.InitState(transform.position.GetHashCode());
 		var rays = 0;
@@ -33,6 +45,11 @@ public class RaycastSoundEmitter : MonoBehaviour {
 	                origin: transform.position,
 	                direction: Random.onUnitSphere));
     }
+
+	void FixedUpdate() {
+		
+	}
+
 
 
 	RaycastSound ComputeSound(
@@ -49,10 +66,8 @@ public class RaycastSoundEmitter : MonoBehaviour {
         var list = hits.OrderBy(hit => hit.distance);
         var nextColor = Color.Lerp(
             color, new Color(color.r, color.g, color.b, 0), 0.5f);
-        var nearest = ray.GetPoint(distance);
         if (list.Any()) {
             var hit = list.First();
-            nearest = hit.point;
             var renderer = hit.transform.GetComponent<Renderer>();
             var tex = renderer.material.mainTexture as Texture2D;
             if (tex==null)
@@ -72,9 +87,7 @@ public class RaycastSoundEmitter : MonoBehaviour {
                     direction: Vector3.Reflect(
                         inDirection: ray.direction+ray.origin,
                         inNormal: hit.normal)));
-		} 
-		DebugLine.DrawLine(ray.origin,nearest,color,nextColor,10f,1f);
-		return ComputeSound(
+		} return ComputeSound(
             volume: CalculateDiffusion(volume),
             distance: distance,
             color: nextColor,

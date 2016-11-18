@@ -65,7 +65,7 @@ MonoBehaviour:
       screenEdgeMask:
         intensity: 0.03
   depthOfField:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       focusDistance: 10
       aperture: 5.6
@@ -97,12 +97,12 @@ MonoBehaviour:
       bloom:
         intensity: 1
         threshold: 1
-        softKnee: 0.5
+        softKnee: 1
         radius: 4
         antiFlicker: 1
       lensDirt:
-        texture: {fileID: 0}
-        intensity: 3
+        texture: {fileID: 2800000, guid: a2960ffde020f27409e070d92fb2e00b, type: 3}
+        intensity: 1
   colorGrading:
     m_Enabled: 1
     m_Settings:
@@ -115,12 +115,12 @@ MonoBehaviour:
         neutralWhiteLevel: 5.3
         neutralWhiteClip: 10
       basic:
-        postExposure: 2
-        temperature: -10
-        tint: 1
+        postExposure: 1
+        temperature: -15
+        tint: 10
         hueShift: 0
-        saturation: 2
-        contrast: 0.5
+        saturation: 0.5
+        contrast: 0.8
       channelMixer:
         red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
@@ -129,8 +129,8 @@ MonoBehaviour:
       colorWheels:
         mode: 1
         log:
-          slope: {r: 0.9889554, g: 0.93724674, b: 1, a: 0.09248555}
-          power: {r: 0.94905806, g: 0.81762475, b: 1, a: 0.1849711}
+          slope: {r: 0.9889554, g: 0.93724674, b: 1, a: 0.025117125}
+          power: {r: 0.94905806, g: 0.81762475, b: 1, a: 0.033392146}
           offset: {r: 0.84648323, g: 0.85408056, b: 1, a: 0.06936416}
         linear:
           lift: {r: 0, g: 0, b: 0, a: 0}
@@ -263,7 +263,7 @@ MonoBehaviour:
         e_CurveG: 0
         e_CurveB: 0
   userLut:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       lut: {fileID: 2800000, guid: 4f98e9c96c8a48541b5eb704e92d99b8, type: 3}
       contribution: 1
@@ -276,14 +276,14 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       colored: 1
-      intensity: 0.5
+      intensity: 0.1
       size: 1
       luminanceContribution: 0.8
   vignette:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       mode: 0
-      color: {r: 0, g: 0, b: 0, a: 1}
+      color: {r: 1, g: 1, b: 1, a: 1}
       center: {x: 0.5, y: 0.5}
       intensity: 0.45
       smoothness: 0.2
