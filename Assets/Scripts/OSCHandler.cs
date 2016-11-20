@@ -82,7 +82,7 @@ public class OSCHandler : MonoBehaviour
 	private Dictionary<string, ClientLog> _clients = new Dictionary<string, ClientLog>();
 	private Dictionary<string, ServerLog> _servers = new Dictionary<string, ServerLog>();
 
-	private string ipAddress = "";
+	public string ipAddress = "";
 
 	private const int _loglength = 25;
 	#endregion
@@ -94,7 +94,8 @@ public class OSCHandler : MonoBehaviour
 	public void Init()
 	{
 		ipAddress = Network.player.ipAddress; //sets the ipAddress of the current machine running the Unity application
-		Debug.Log (ipAddress);
+		//Debug.Log (ipAddress);
+
         //Initialize OSC clients (transmitters)
         //Example:		
         //communicates with max msp on mac through cmu network

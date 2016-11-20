@@ -71,7 +71,7 @@ public class oscControl : MonoBehaviour {
 	// NOTE: The received messages at each server are updated here
     // Hence, this update depends on your application architecture
     // How many frames per second or Update() calls per frame?
-	void Update() {
+	void Update1() {
 
 		OSCHandler.Instance.UpdateLogs();
 		//var val = new byte[]{176,8,0};

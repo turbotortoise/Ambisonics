@@ -87,7 +87,7 @@ Material:
       second: 0
     - first:
         name: _Exposure
-      second: 4
+      second: 2
     - first:
         name: _GlossMapScale
       second: 1
@@ -142,4 +142,4 @@ Material:
       second: {r: 0.4852941, g: 0.4852941, b: 0.4852941, a: 1}
     - first:
         name: _SkyTint
-      second: {r: 0.7941176, g: 1, b: 0.812576, a: 1}
+      second: {r: 0.551038, g: 0.7205882, b: 0.56623906, a: 1}

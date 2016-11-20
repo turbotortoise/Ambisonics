@@ -75,6 +75,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012302670366}
   - 114: {fileID: 114000013372063824}
+  - 114: {fileID: 114000011405328074}
   m_Layer: 0
   m_Name: Controller (right)
   m_TagString: Untagged
@@ -91,6 +92,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012045117654}
   - 114: {fileID: 114000011703065326}
+  - 114: {fileID: 114000010557094762}
   m_Layer: 0
   m_Name: Controller (left)
   m_TagString: Untagged
@@ -183,7 +185,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010084264452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -394,6 +396,19 @@ MonoBehaviour:
   verbose: 0
   createComponents: 1
   updateDynamically: 1
+--- !u!114 &114000010557094762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011900808908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5174e6450fdcf0b4fb5227011b2c843a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1000013174670460, guid: 7571c48b418ea794aaa676073ce6b2bb, type: 2}
+  disc: {fileID: 1000010532118744, guid: cd5162b9280224944abbbb8b8c3cd28a, type: 2}
 --- !u!114 &114000010734949586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -408,6 +423,19 @@ MonoBehaviour:
   _head: {fileID: 4000012959507236}
   _ears: {fileID: 4000013478313578}
   wireframe: 0
+--- !u!114 &114000011405328074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011310685650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5174e6450fdcf0b4fb5227011b2c843a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1000013174670460, guid: 7571c48b418ea794aaa676073ce6b2bb, type: 2}
+  disc: {fileID: 1000010532118744, guid: cd5162b9280224944abbbb8b8c3cd28a, type: 2}
 --- !u!114 &114000011703065326
 MonoBehaviour:
   m_ObjectHideFlags: 1

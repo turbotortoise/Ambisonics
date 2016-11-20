@@ -25,11 +25,11 @@ MonoBehaviour:
         motionVectorsResolution: 24
         motionVectorsAmplitude: 64
   antialiasing:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       method: 0
       fxaaSettings:
-        preset: 2
+        preset: 3
       taaSettings:
         jitterSpread: 0.75
         sharpen: 0.3
@@ -40,9 +40,9 @@ MonoBehaviour:
     m_Settings:
       intensity: 1
       radius: 0.3
-      sampleCount: 10
+      sampleCount: 3
       downsampling: 1
-      forceForwardCompatibility: 0
+      forceForwardCompatibility: 1
       ambientOnly: 0
       highPrecision: 0
   screenSpaceReflection:
@@ -70,14 +70,14 @@ MonoBehaviour:
       focusDistance: 10
       aperture: 5.6
       focalLength: 50
-      useCameraFov: 0
-      kernelSize: 1
+      useCameraFov: 1
+      kernelSize: 3
   motionBlur:
     m_Enabled: 0
     m_Settings:
-      shutterAngle: 270
+      shutterAngle: 2
       sampleCount: 6
-      frameBlending: 0.384
+      frameBlending: 0.174
   eyeAdaptation:
     m_Enabled: 0
     m_Settings:
@@ -95,7 +95,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 1
+        intensity: 0.7
         threshold: 1
         softKnee: 1
         radius: 4
@@ -116,7 +116,7 @@ MonoBehaviour:
         neutralWhiteClip: 10
       basic:
         postExposure: 1
-        temperature: -15
+        temperature: -20
         tint: 10
         hueShift: 0
         saturation: 0.5
@@ -129,13 +129,13 @@ MonoBehaviour:
       colorWheels:
         mode: 1
         log:
-          slope: {r: 0.9889554, g: 0.93724674, b: 1, a: 0.025117125}
-          power: {r: 0.94905806, g: 0.81762475, b: 1, a: 0.033392146}
-          offset: {r: 0.84648323, g: 0.85408056, b: 1, a: 0.06936416}
+          slope: {r: 0.8709092, g: 0.9796416, b: 1, a: 0.095282674}
+          power: {r: 0.83424765, g: 1, b: 0.8613358, a: 0.056498874}
+          offset: {r: 0.946944, g: 1, b: 0.8938879, a: 0.021037284}
         linear:
-          lift: {r: 0, g: 0, b: 0, a: 0}
-          gamma: {r: 0, g: 0, b: 0, a: 0}
-          gain: {r: 0, g: 0, b: 0, a: 0}
+          lift: {r: 1, g: 1, b: 1, a: 0}
+          gamma: {r: 1, g: 1, b: 1, a: 0}
+          gain: {r: 1, g: 1, b: 1, a: 0}
       curves:
         master:
           curve:
@@ -143,13 +143,13 @@ MonoBehaviour:
             m_Curve:
             - time: 0
               value: 0
-              inSlope: 1
+              inSlope: 0
               outSlope: 1
               tangentMode: 0
             - time: 1
               value: 1
               inSlope: 1
-              outSlope: 1
+              outSlope: 0
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
@@ -173,7 +173,7 @@ MonoBehaviour:
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
             m_Curve: []
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 1
           m_ZeroValue: 0.5
           m_Range: 1
@@ -233,7 +233,7 @@ MonoBehaviour:
             m_Curve: []
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 1
           m_ZeroValue: 0.5
           m_Range: 1
@@ -243,7 +243,7 @@ MonoBehaviour:
             m_Curve: []
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 0
           m_ZeroValue: 0.5
           m_Range: 1
@@ -253,7 +253,7 @@ MonoBehaviour:
             m_Curve: []
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 0
           m_ZeroValue: 0.5
           m_Range: 1
@@ -268,7 +268,7 @@ MonoBehaviour:
       lut: {fileID: 2800000, guid: 4f98e9c96c8a48541b5eb704e92d99b8, type: 3}
       contribution: 1
   chromaticAberration:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       spectralTexture: {fileID: 2800000, guid: 7a051dbda2d7bc447bee412427cd311e, type: 3}
       intensity: 0.1
