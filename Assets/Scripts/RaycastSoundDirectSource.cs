@@ -42,11 +42,10 @@ public class RaycastSoundDirectSource : MonoBehaviour {
             position = listener.transform.position - transform.position };
 
 
-        //#if _DEBUG
+        #if _DEBUG
         var nearest = ray.GetPoint(distance);
-        //if (list.Any()) nearest = hit.point;
         DebugLine.DrawLine(ray.origin,nearest,Color.red,Color.red,10f,1f);
-        //#endif
+        #endif
     }
 
 }

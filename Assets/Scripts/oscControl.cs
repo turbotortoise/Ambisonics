@@ -44,11 +44,6 @@ public class oscControl : MonoBehaviour {
 		//OSCHandler.Instance.SendMessageToClient(
 		//	"TouchOSC Bridge", thing.name+":", ListFlattenData(thing));
 
-
-
-		foreach (var thing in things)
-			print( "start:"+thing.sound.name+":");
-
 		foreach (var thing in things)
 			OSCHandler.Instance.SendMessageToClient(
 				"TouchOSC Bridge", "start:"+thing.sound.name+":",

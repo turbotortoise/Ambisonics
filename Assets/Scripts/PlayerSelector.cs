@@ -8,12 +8,17 @@ public class PlayerSelector : MonoBehaviour {
 	public GameObject prefabOculus;
 	public GameObject prefabOpenVR;
 
+	public bool IsAmbisonic;
+
 	Dictionary<string,GameObject> prefabs =
 		new Dictionary<string,GameObject>();
 
 	void Awake() {
 		prefabs ["OpenVR"] = prefabOpenVR;
 		prefabs ["Oculus"] = prefabOculus;
+		if (IsAmbisonic)
+			foreach (var sound in Object.FindObjectsOfType<AudioSource>()) 
+				sound.enabled = false;
 	}
 
 	void Start () {

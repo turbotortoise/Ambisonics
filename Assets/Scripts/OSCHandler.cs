@@ -101,7 +101,7 @@ public class OSCHandler : MonoBehaviour
         //communicates with max msp on mac through cmu network
         //udpreceive 8000
         //udpsend 128.thispc 9000
-		CreateClient("TouchOSC Bridge", IPAddress.Parse("128.237.207.34"), 8000);
+		CreateClient("TouchOSC Bridge", IPAddress.Parse("128.237.207.36"), 8000);
 
         //Initialize OSC servers (listeners)
         //Example:
