@@ -29,7 +29,7 @@ public class GotoPointer : MonoBehaviour {
 		solverIterations = 16;
 		results = new RaycastHit[solverIterations];
 		positions = new Vector3[solverIterations];
-		player = GameObject.FindGameObjectWithTag("Player"); 
+		player = GameObject.FindGameObjectWithTag("Player");
 		mask = 1 << LayerMask.NameToLayer("Room");
 	}
 
@@ -60,14 +60,13 @@ public class GotoPointer : MonoBehaviour {
 		if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger)) triggerHeld = false;
 	}
 
-	void FixedUpdate() { 
-		if (triggerHeld && !wait) {
+	void FixedUpdate() {
+		if (triggerHeld && !wait && !triggerPrimed) {
 			if (tracking!=null) {
 				StopCoroutine(tracking);
 				wait = false;
 			}
-			print("fixed");
-			tracking = StartCoroutine(MovingToParabolic()); 
+			tracking = StartCoroutine(MovingToParabolic());
 		}
 	}
 
@@ -92,7 +91,7 @@ public class GotoPointer : MonoBehaviour {
 				direction += Physics.gravity*Time.fixedDeltaTime + transform.forward*Time.fixedDeltaTime;
 				line.SetPositions(positions);
 				if (raycastCount<=0) continue;
-				var query = 
+				var query =
 					from result in results
 					where result.transform!=null orderby result.distance
 					select result;
@@ -113,7 +112,7 @@ public class GotoPointer : MonoBehaviour {
 				SendLineCircle(target.GetComponent<LineRenderer>());
 				break;
 			}
-		} 
+		}
 		if (target && radius<Vector3.Distance(target.position, transform.position)) Goto(target);
 		DisableLine();
 		yield return new WaitForSeconds(0.1f);

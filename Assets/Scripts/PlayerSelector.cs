@@ -8,7 +8,7 @@ public class PlayerSelector : MonoBehaviour {
 	public GameObject prefabOculus;
 	public GameObject prefabOpenVR;
 
-	Dictionary<string,GameObject> prefabs = 
+	Dictionary<string,GameObject> prefabs =
 		new Dictionary<string,GameObject>();
 
 	void Awake() {
@@ -21,12 +21,12 @@ public class PlayerSelector : MonoBehaviour {
 			Create (prefabs [VRSettings.loadedDeviceName]); }
 
 	void Create(GameObject prefab) {
-		foreach (Transform child in transform) 
+		foreach (Transform child in transform)
 			Destroy (child.gameObject);
 		var instance = Instantiate (
-			prefab, 
-			transform.position, 
-			transform.rotation) as GameObject; 
+			prefab,
+			transform.position,
+			transform.rotation) as GameObject;
 		instance.transform.parent = transform;
 	}
 

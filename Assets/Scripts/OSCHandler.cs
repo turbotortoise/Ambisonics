@@ -1,19 +1,19 @@
 //
-//	  UnityOSC - Open Sound Control interface for the Unity3d game engine	  
+//	  UnityOSC - Open Sound Control interface for the Unity3d game engine
 //
 //	  Copyright (c) 2012 Jorge Garcia Martin
 //
-// 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// 	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // 	  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-// 	  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+// 	  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
 // 	  and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// 	  The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// 	  The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // 	  of the Software.
 //
-// 	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// 	  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// 	  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// 	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// 	  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// 	  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 // 	  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // 	  IN THE SOFTWARE.
 //
@@ -62,21 +62,21 @@ public class OSCHandler : MonoBehaviour
 	OSCHandler()
 	{
 	}
-	
-	public static OSCHandler Instance 
+
+	public static OSCHandler Instance
 	{
-	    get 
+	    get
 		{
-	        if (_instance == null) 
+	        if (_instance == null)
 			{
 				_instance = new GameObject ("OSCHandler").AddComponent<OSCHandler>();
 	        }
-	       
+
 	        return _instance;
 	    }
 	}
 	#endregion
-	
+
 	#region Member Variables
 	private static OSCHandler _instance = null;
 	private Dictionary<string, ClientLog> _clients = new Dictionary<string, ClientLog>();
@@ -86,7 +86,7 @@ public class OSCHandler : MonoBehaviour
 
 	private const int _loglength = 25;
 	#endregion
-	
+
 	/// <summary>
 	/// Initializes the OSC Handler.
 	/// Here you can create the OSC servers and clientes.
@@ -97,18 +97,18 @@ public class OSCHandler : MonoBehaviour
 		//Debug.Log (ipAddress);
 
         //Initialize OSC clients (transmitters)
-        //Example:		
+        //Example:
         //communicates with max msp on mac through cmu network
         //udpreceive 8000
         //udpsend 128.thispc 9000
-		CreateClient("TouchOSC Bridge", IPAddress.Parse("128.237.165.18"), 8000);
+		CreateClient("TouchOSC Bridge", IPAddress.Parse("128.237.207.34"), 8000);
 
         //Initialize OSC servers (listeners)
         //Example:
 		CreateServer ("TouchOSC Server", 9000);
         //CreateServer("AndroidPhone", 6666);
 	}
-	
+
 	#region Properties
 	public Dictionary<string, ClientLog> Clients
 	{
@@ -117,7 +117,7 @@ public class OSCHandler : MonoBehaviour
 			return _clients;
 		}
 	}
-	
+
 	public Dictionary<string, ServerLog> Servers
 	{
 		get
@@ -126,28 +126,28 @@ public class OSCHandler : MonoBehaviour
 		}
 	}
 	#endregion
-	
+
 	#region Methods
-	
+
 	/// <summary>
 	/// Ensure that the instance is destroyed when the game is stopped in the Unity editor
 	/// Close all the OSC clients and servers
 	/// </summary>
-	void OnApplicationQuit() 
+	void OnApplicationQuit()
 	{
 		foreach(KeyValuePair<string,ClientLog> pair in _clients)
 		{
 			pair.Value.client.Close();
 		}
-		
+
 		foreach(KeyValuePair<string,ServerLog> pair in _servers)
 		{
 			pair.Value.server.Close();
 		}
-			
+
 		_instance = null;
 	}
-	
+
 	/// <summary>
 	/// Creates an OSC Client (sends OSC messages) given an outgoing port and address.
 	/// </summary>
@@ -166,23 +166,23 @@ public class OSCHandler : MonoBehaviour
 		clientitem.client = new OSCClient(destination, port);
 		clientitem.log = new List<string>();
 		clientitem.messages = new List<OSCMessage>();
-		
+
 		_clients.Add(clientId, clientitem);
-		
+
 		// Send test message
 	/*	string testaddress = "/test/alive/";
 		OSCMessage message = new OSCMessage(testaddress, destination.ToString());
 		message.Append(port); message.Append("OK");
-		
+
 		_clients[clientId].log.Add(String.Concat(DateTime.UtcNow.ToString(),".",
 		                                         FormatMilliseconds(DateTime.Now.Millisecond), " : ",
 		                                         testaddress," ", DataToString(message.Data)));
 		_clients[clientId].messages.Add(message);
-		
+
 		_clients[clientId].client.Send(message);
 	*/
 	}
-	
+
 	/// <summary>
 	/// Creates an OSC Server (listens to upcoming OSC messages) given an incoming port.
 	/// </summary>
@@ -201,7 +201,7 @@ public class OSCHandler : MonoBehaviour
         serveritem.server = server;
 		serveritem.log = new List<string>();
 		serveritem.packets = new List<OSCPacket>();
-		
+
 		_servers.Add(serverId, serveritem);
 	}
 
@@ -210,7 +210,7 @@ public class OSCHandler : MonoBehaviour
 		Debug.Log ("packet received");
 		//Debug.Log (packet.Data[0].ToString());
     }
-	
+
 	/// <summary>
 	/// Sends an OSC message to a specified client, given its clientId (defined at the OSC client construction),
 	/// OSC address and a single value. Also updates the client log.
@@ -231,7 +231,7 @@ public class OSCHandler : MonoBehaviour
 		//Debug.Log("Value"+value.ToString ());
 		SendMessageToClient(clientId, address, temp);
 	}
-	
+
 	/// <summary>
 	/// Sends an OSC message to a specified client, given its clientId (defined at the OSC client construction),
 	/// OSC address and a list of values. Also updates the client log.
@@ -246,16 +246,16 @@ public class OSCHandler : MonoBehaviour
 	/// A <see cref="List<T>"/>
 	/// </param>
 	public void SendMessageToClient<T>(string clientId, string address, List<T> values)
-	{	
+	{
 		if(_clients.ContainsKey(clientId))
 		{
 			OSCMessage message = new OSCMessage(address);
-		
+
 			foreach(T msgvalue in values)
 			{
 				message.Append(msgvalue);
 			}
-			
+
 			if(_clients[clientId].log.Count < _loglength)
 			{
 				_clients[clientId].log.Add(String.Concat(DateTime.UtcNow.ToString(),".",
@@ -267,13 +267,13 @@ public class OSCHandler : MonoBehaviour
 			{
 				_clients[clientId].log.RemoveAt(0);
 				_clients[clientId].messages.RemoveAt(0);
-				
+
 				_clients[clientId].log.Add(String.Concat(DateTime.UtcNow.ToString(),".",
 				                                         FormatMilliseconds(DateTime.Now.Millisecond),
 				                                         " : ", address, " ", DataToString(message.Data)));
 				_clients[clientId].messages.Add(message);
 			}
-			
+
 			_clients[clientId].client.Send(message);
 		}
 		else
@@ -281,7 +281,7 @@ public class OSCHandler : MonoBehaviour
 			Debug.LogError(string.Format("Can't send OSC messages to {0}. Client doesn't exist.", clientId));
 		}
 	}
-	
+
 	/// <summary>
 	/// Updates clients and servers logs.
 	/// </summary>
@@ -293,27 +293,27 @@ public class OSCHandler : MonoBehaviour
 			{
 				//Initialization for the first packet received
 				if(_servers[pair.Key].log.Count == 0)
-				{	
+				{
 					_servers[pair.Key].packets.Add(_servers[pair.Key].server.LastReceivedPacket);
-						
+
 					_servers[pair.Key].log.Add(String.Concat(DateTime.UtcNow.ToString(), ".",
 					                                         FormatMilliseconds(DateTime.Now.Millisecond)," : ",
 					                                         _servers[pair.Key].server.LastReceivedPacket.Address," ",
 					                                         DataToString(_servers[pair.Key].server.LastReceivedPacket.Data)));
 					break;
 				}
-						
+
 				if(_servers[pair.Key].server.LastReceivedPacket.TimeStamp
 				   != _servers[pair.Key].packets[_servers[pair.Key].packets.Count - 1].TimeStamp)
-				{	
+				{
 					if(_servers[pair.Key].log.Count > _loglength - 1)
 						{
 						_servers[pair.Key].log.RemoveAt(0);
 						_servers[pair.Key].packets.RemoveAt(0);
 					}
-		
+
 					_servers[pair.Key].packets.Add(_servers[pair.Key].server.LastReceivedPacket);
-						
+
 					_servers[pair.Key].log.Add(String.Concat(DateTime.UtcNow.ToString(), ".",
 					                                         FormatMilliseconds(DateTime.Now.Millisecond)," : ",
 					                                         _servers[pair.Key].server.LastReceivedPacket.Address," ",
@@ -322,7 +322,7 @@ public class OSCHandler : MonoBehaviour
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Converts a collection of object values to a concatenated string.
 	/// </summary>
@@ -335,17 +335,17 @@ public class OSCHandler : MonoBehaviour
 	private string DataToString(List<object> data)
 	{
 		string buffer = "";
-		
+
 		for(int i = 0; i < data.Count; i++)
 		{
 			buffer += data[i].ToString() + " ";
 		}
-		
+
 		buffer += "\n";
-		
+
 		return buffer;
 	}
-	
+
 	/// <summary>
 	/// Formats a milliseconds number to a 000 format. E.g. given 50, it outputs 050. Given 5, it outputs 005
 	/// </summary>
@@ -356,18 +356,18 @@ public class OSCHandler : MonoBehaviour
 	/// A <see cref="System.String"/>
 	/// </returns>
 	private string FormatMilliseconds(int milliseconds)
-	{	
+	{
 		if(milliseconds < 100)
 		{
 			if(milliseconds < 10)
 				return String.Concat("00",milliseconds.ToString());
-			
+
 			return String.Concat("0",milliseconds.ToString());
 		}
-		
+
 		return milliseconds.ToString();
 	}
-			
+
 	#endregion
-}	
+}
 

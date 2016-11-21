@@ -18,10 +18,10 @@ public struct RaycastSound {
 	public Vector3 position;
 
 	public RaycastSound(
-					float time, 
+					float time,
 					float volume,
 					string name,
-					Color color, 
+					Color color,
 					Vector3 position) : this(
 			time: time,
 			volume: volume,

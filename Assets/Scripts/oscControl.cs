@@ -27,15 +27,36 @@ using UnityOSC;
 
 public class oscControl : MonoBehaviour {
 
+	bool wait;
+
 	private Dictionary<string, ServerLog> servers;
 	//private Dictionary<string, ClientLog> clients;
 
-	[SerializeField] List<RaycastSoundEmitter> things;
+	[SerializeField] List<RaycastSoundDirectSource> things;
 
-	void Start() {
+	IEnumerator Start() {
+		wait = true;
 		OSCHandler.Instance.Init(); //init OSC
 		servers = new Dictionary<string, ServerLog>();
 		//clients = new Dictionary<string,ClientLog> ();
+
+
+		//OSCHandler.Instance.SendMessageToClient(
+		//	"TouchOSC Bridge", thing.name+":", ListFlattenData(thing));
+
+
+
+		foreach (var thing in things)
+			print( "start:"+thing.sound.name+":");
+
+		foreach (var thing in things)
+			OSCHandler.Instance.SendMessageToClient(
+				"TouchOSC Bridge", "start:"+thing.sound.name+":",
+				ListFlattenData(thing.sound));
+
+		yield return new WaitForSeconds(0.1f);
+		wait = false;
+
 	}
 
 
@@ -43,7 +64,7 @@ public class oscControl : MonoBehaviour {
 	string FlattenSoundData(RaycastSound sound) {
 		return string.Format(
 			"{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
-			sound.name,
+			1f,
 			sound.time,
 			sound.occlusion,
 			sound.absorption,
@@ -54,8 +75,8 @@ public class oscControl : MonoBehaviour {
 
 	List<float> ListFlattenData (RaycastSound sound) {
 		return new List<float> {
-			1f,
-			sound.time,	
+			0f,
+			sound.time,
 			sound.occlusion,
 			sound.absorption,
 			sound.roughness,
@@ -66,12 +87,20 @@ public class oscControl : MonoBehaviour {
 	}
 
 
+	List<float> ListFlattenUpdateData(RaycastSound sound) {
+		return new List<float> {
+			sound.attenuation,
+			sound.position.x,
+			sound.position.z
+		};
+	}
+
 
 
 	// NOTE: The received messages at each server are updated here
     // Hence, this update depends on your application architecture
     // How many frames per second or Update() calls per frame?
-	void Update1() {
+	void Update() {
 
 		OSCHandler.Instance.UpdateLogs();
 		//var val = new byte[]{176,8,0};
@@ -79,13 +108,22 @@ public class oscControl : MonoBehaviour {
 		servers = OSCHandler.Instance.Servers;
 		//clients = OSCHandler.Instance.Clients;
 
-		//foreach (var thing in things) 
+		//foreach (var thing in things)
 		//	OSCHandler.Instance.SendMessageToClient (
 		//		"TouchOSC Bridge", "list:raycast:1:", ListFlattenData(thing.sound));
 
-		foreach (var thing in things) 
-			OSCHandler.Instance.SendMessageToClient (
-				"TouchOSC Bridge", "list:raycast:1:", ListFlattenData(thing.sound));
+		if (!wait) foreach (var thing in things)
+			OSCHandler.Instance.SendMessageToClient(
+				"TouchOSC Bridge",
+				"update:"+thing.sound.name+":",
+				ListFlattenUpdateData(thing.sound));
+
+
+
+
+		//foreach (var thing in things1)
+		//	OSCHandler.Instance.SendMessageToClient(
+		//		"TouchOSC Bridge", thing.sound.name, ListFlattenData(thing.sound));
 
 		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationx:", transform.rotation.x);
 		//OSCHandler.Instance.SendMessageToClient ("TouchOSC Bridge", "rotationy:", transform.rotation.y);
