@@ -21,6 +21,7 @@ limitations under the License.
 
 using UnityEngine;
 using System.Collections; // required for Coroutines
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Fades the screen from black after a new scene is loaded.
@@ -55,15 +56,20 @@ public class OVRScreenFade : MonoBehaviour
 	/// </summary>
 	void OnEnable()
 	{
+		SceneManager.sceneLoaded += OnSceneChanged;
 		StartCoroutine(FadeIn());
+	}
+
+	void OnDisable() {
+		SceneManager.sceneLoaded -= OnSceneChanged;
 	}
 
 	/// <summary>
 	/// Starts a fade in when a new level is loaded
 	/// </summary>
-	void OnLevelWasLoaded(int level)
-	{
-		StartCoroutine(FadeIn());
+	void OnSceneChanged(Scene scene, LoadSceneMode mode) 
+	{ 
+		StartCoroutine(FadeIn()); 
 	}
 
 	/// <summary>

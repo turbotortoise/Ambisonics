@@ -38,22 +38,15 @@ public class oscControl : MonoBehaviour {
 		wait = true;
 		OSCHandler.Instance.Init(); //init OSC
 		servers = new Dictionary<string, ServerLog>();
-		//clients = new Dictionary<string,ClientLog> ();
 
+		//clients = new Dictionary<string,ClientLog> ();
 
 		//OSCHandler.Instance.SendMessageToClient(
 		//	"TouchOSC Bridge", thing.name+":", ListFlattenData(thing));
 
-
-
-		foreach (var thing in things)
-			print( "start:"+thing.sound.name+":");
-
-		foreach (var thing in things)
-			OSCHandler.Instance.SendMessageToClient(
-				"TouchOSC Bridge", "start:"+thing.sound.name+":",
-				ListFlattenData(thing.sound));
-
+		OSCHandler.Instance.SendMessageToClient("TouchOSC Bridge", "start:", 1);
+		OSCHandler.Instance.SendMessageToClient("TouchOSC Bridge", "route_ray:", 
+			new List<float>(new[] { 1f,1f,1f,5f,0.5f,0.8f,2f,2f }));
 		yield return new WaitForSeconds(0.1f);
 		wait = false;
 

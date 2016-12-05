@@ -3,104 +3,48 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-
+[RequireComponent(typeof(AudioSource))]
 public class RaycastSoundEmitter : MonoBehaviour {
-
-    LayerMask layerMask;
-	RaycastSound[] raycastSounds;
-    [SerializeField] bool seed;
-    [SerializeField] int resolution = 16;
-    [SerializeField] float volume = 32f;
-    [SerializeField] float range = 64f;
-    [SerializeField] float distance = 4f;
-    [SerializeField] Color color = Color.green;
-	[SerializeField] GameObject player;
-
-	public RaycastSound sound {
-		get {
-			return new RaycastSound (
-				name: "sound1",
-				time: 0.1f,
-				volume: 1f,
-				color: Color.clear,
-				position: player.transform.position - transform.position);
-			}
-	}
+	const float speedOfSound = 343.2f; // m/s
+	new AudioSource audio;
+	Transform listener;
+	public RaycastSound sound {get; protected set;}
 
 	void Awake() {
-		layerMask = 1 << LayerMask.NameToLayer("Sound");	
-		raycastSounds = new RaycastSound[resolution];
+		audio = GetComponent<AudioSource>();
+		listener = Camera.main.GetComponent<AudioListener>().transform;
 	}
 
-    void Start1() {
-		if (seed)
-			Random.InitState(transform.position.GetHashCode());
-		var rays = 0;
-		while (rays++ < resolution) 
-	        raycastSounds[rays] = ComputeSound(
-	            volume: volume,
-	            distance: distance,
-	            color: color,
-	            ray: new Ray(
-	                origin: transform.position,
-	                direction: Random.onUnitSphere));
-    }
-
-	void FixedUpdate() {
-		
+	IEnumerator Start() {
+		var layerMask = ~(1 << LayerMask.NameToLayer("Sound"));
+		var lowpass = audio.outputAudioMixerGroup.audioMixer.FindSnapshot("Occlusion");
+		var snapshot = audio.outputAudioMixerGroup.audioMixer.FindSnapshot("Snapshot");
+		var updateInstruction = new WaitForFixedUpdate();
+		var position = listener.position - transform.position;
+		var distance = Vector3.Distance(listener.position, transform.position);
+		var ray = new Ray(transform.position, position);
+		var hits = Physics.RaycastAll(ray, distance, layerMask);
+		var attenuation = 0f;
+		var occlusion = 0.3f;
+		while (true) {
+			yield return updateInstruction;
+			position = listener.position - transform.position;
+			distance = Vector3.Distance(listener.position, transform.position);
+			ray = new Ray(transform.position, position);
+			hits = Physics.RaycastAll(ray, distance, layerMask);
+			attenuation = hits.Length/10f;
+			if (0<hits.Length) lowpass.TransitionTo(occlusion);
+			else snapshot.TransitionTo(occlusion);
+			//print(hits.Length);
+			sound = new RaycastSound(
+				name: name,
+				time: distance/speedOfSound,
+				volume: audio.volume,
+				absorption: 0f,
+				roughness: 0f,
+				occlusion: occlusion,
+				attenuation: attenuation,
+				position: position);
+		}
 	}
-
-
-
-	RaycastSound ComputeSound(
-                    float volume,
-                    float distance,
-                    Color color,
-                    Ray ray) {
-		if (volume <= 0)
-			return (default (RaycastSound));
-		if ((transform.position - ray.origin).sqrMagnitude > range * range)
-			return (default (RaycastSound));
-        //yield return new WaitForFixedUpdate();
-        var hits = Physics.RaycastAll(ray, distance, layerMask);
-        var list = hits.OrderBy(hit => hit.distance);
-        var nextColor = Color.Lerp(
-            color, new Color(color.r, color.g, color.b, 0), 0.5f);
-        if (list.Any()) {
-            var hit = list.First();
-            var renderer = hit.transform.GetComponent<Renderer>();
-            var tex = renderer.material.mainTexture as Texture2D;
-            if (tex==null)
-                (tex = new Texture2D(1,1)).SetPixel(0,0,
-                    renderer.material.color);
-            var coords = Vector2.Scale(
-                hit.textureCoord,
-                new Vector2(tex.width, tex.height));
-            var texel = tex.GetPixel((int) coords.x, (int) coords.y);
-            nextColor = Color.Lerp(nextColor, texel, 0.5f);
-			return ComputeSound(
-                volume: CalculateDampening(volume,texel.grayscale),
-                distance: distance,
-                color: nextColor,
-                ray: new Ray(
-                    origin: hit.point,
-                    direction: Vector3.Reflect(
-                        inDirection: ray.direction+ray.origin,
-                        inNormal: hit.normal)));
-		} return ComputeSound(
-            volume: CalculateDiffusion(volume),
-            distance: distance,
-            color: nextColor,
-            ray: new Ray(
-                origin: ray.GetPoint(distance),
-                direction: ray.direction));
-    }
-
-
-    static float CalculateDampening(float volume, float absorption) {
-        return volume - volume*absorption - 0.5f; }
-
-    static float CalculateDiffusion(float volume) { return volume-1; }
-
-
 }

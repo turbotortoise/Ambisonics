@@ -181,21 +181,21 @@ public class OVRPlayerController : MonoBehaviour
 
 		Vector3 moveDirection = Vector3.zero;
 
-		float motorDamp = (1.0f + (Damping * SimulationRate * Time.deltaTime));
+		float motorDamp = (1.0f + (Damping * SimulationRate * Time.fixedDeltaTime));
 
 		MoveThrottle.x /= motorDamp;
 		MoveThrottle.y = (MoveThrottle.y > 0.0f) ? (MoveThrottle.y / motorDamp) : MoveThrottle.y;
 		MoveThrottle.z /= motorDamp;
 
-		moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
+		moveDirection += MoveThrottle * SimulationRate * Time.fixedDeltaTime;
 
 		// Gravity
 		if (Controller.isGrounded && FallSpeed <= 0)
 			FallSpeed = ((Physics.gravity.y * (GravityModifier * 0.002f)));
 		else
-			FallSpeed += ((Physics.gravity.y * (GravityModifier * 0.002f)) * SimulationRate * Time.deltaTime);
+			FallSpeed += ((Physics.gravity.y * (GravityModifier * 0.002f)) * SimulationRate * Time.fixedDeltaTime);
 
-		moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;
+		moveDirection.y += FallSpeed * SimulationRate * Time.fixedDeltaTime;
 
 		// Offset correction for uneven ground
 		float bumpUpOffset = 0.0f;
@@ -214,7 +214,7 @@ public class OVRPlayerController : MonoBehaviour
 		Vector3 actualXZ = Vector3.Scale(Controller.transform.localPosition, new Vector3(1, 0, 1));
 
 		if (predictedXZ != actualXZ)
-			MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
+			MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.fixedDeltaTime);
 	}
 
 	public virtual void UpdateMovement()
@@ -242,6 +242,19 @@ public class OVRPlayerController : MonoBehaviour
 			dpad_move = true;
 		}
 
+		if (OVRInput.Get(OVRInput.Button.DpadLeft))
+		{
+			moveLeft  = true;
+			dpad_move = true;
+		}
+
+		if (OVRInput.Get(OVRInput.Button.DpadRight))
+		{
+			moveRight = true;
+			dpad_move = true;
+		}
+
+
 		MoveScale = 1.0f;
 
 		if ( (moveForward && moveLeft) || (moveForward && moveRight) ||
@@ -252,7 +265,7 @@ public class OVRPlayerController : MonoBehaviour
 		if (!Controller.isGrounded)
 			MoveScale = 0.0f;
 
-		MoveScale *= SimulationRate * Time.deltaTime;
+		MoveScale *= SimulationRate * Time.fixedDeltaTime;
 
 		// Compute this for key movement
 		float moveInfluence = Acceleration * 0.1f * MoveScale * MoveScaleMultiplier;
@@ -292,18 +305,13 @@ public class OVRPlayerController : MonoBehaviour
 		prevHatRight = curHatRight;
 
 		//Use keys to ratchet rotation
-		if (Input.GetKeyDown(KeyCode.Q))
-			euler.y -= RotationRatchet;
+		//if (Input.GetKeyDown(KeyCode.Q) || OVRInput.GetDown(OVRInput.Button.DpadLeft))
+		//	euler.y -= RotationRatchet;
 
-		if (Input.GetKeyDown(KeyCode.E))
-			euler.y += RotationRatchet;
+		//if (Input.GetKeyDown(KeyCode.E) || OVRInput.GetDown(OVRInput.Button.DpadRight))
+		//	euler.y += RotationRatchet;
 
-		float rotateInfluence = SimulationRate * Time.deltaTime * RotationAmount * RotationScaleMultiplier;
-
-#if !UNITY_ANDROID || UNITY_EDITOR
-		if (!SkipMouseRotation)
-			euler.y += Input.GetAxis("Mouse X") * rotateInfluence * 3.25f;
-#endif
+		float rotateInfluence = SimulationRate * Time.fixedDeltaTime * RotationAmount * RotationScaleMultiplier;
 
 		moveInfluence = Acceleration * 0.1f * MoveScale * MoveScaleMultiplier;
 
